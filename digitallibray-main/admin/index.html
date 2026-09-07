@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Dashboard · Digital Library Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../config/supabase.js"></script>
+    <script src="../config/storage.js"></script>
+</head>
+
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">Digital Library<small>ADMIN PORTAL</small></div>
+            <nav class="nav"><a class="active" href="index.html">▦ Dashboard</a><a class="" href="resources.html">▤
+                    Resources</a><a class="" href="add-resource.html">＋ Add Resource</a><a class="" href="projects.html">⌘ Projects</a><a class=""
+                    href="website.html">⌂ Website</a>
+                    <!-- <a class="" href="announcements.html">◉ Announcements</a> -->
+                    <a
+                    class="" href="media.html">▧ Media</a><a class="" href="settings.html">⚙ Settings</a></nav>
+            <div class="sidebar-bottom"><button class="btn" data-logout style="width:100%">Logout</button></div>
+        </aside>
+        <main class="main">
+            <div class="topbar">
+                <div><button class="btn mobile-menu" id="menuBtn">☰</button>
+                    <h1>Dashboard</h1>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center"><span class="demo-pill">DEMO MODE</span><button
+                        class="btn" id="themeBtn">◐ Theme</button></div>
+            </div>
+            <div class="grid">
+                <div class="card metric">
+                    <div class="label">Total Resources</div>
+                    <div class="value" id="total">—</div>
+                </div>
+                <div class="card metric">
+                    <div class="label">Published</div>
+                    <div class="value" id="published">—</div>
+                </div>    
+                <div class="card metric">
+                    <div class="label">Drafts</div>
+                    <div class="value" id="drafts">—</div>
+                </div>
+                <div class="card metric">
+                    <div class="label">Total Downloads</div>
+                    <div class="value" id="downloads">—</div>
+                </div>
+                <div class="card metric storage-metric">
+                    <div class="label">Storage</div>
+                    <div class="value" id="storageUsed">—</div>
+                    <div class="muted" id="storageRemaining">Checking storage...</div>
+                    <div class="storage-track"><span id="storageBar"></span></div>
+                    <div class="storage-status" id="storageStatus">—</div>
+                </div>
+            </div>
+            <div class="two-col section">
+                <div class="card">
+                    <div class="section-head">
+                        <h2>Recent Resources</h2><a href="resources.html">View all</a>
+                    </div>
+                    <div id="recent" class="empty">Connect Supabase to load resources.</div>
+                </div>
+                <div class="card">
+                    <div class="section-head">
+                        <h2>Quick Actions</h2>
+                    </div>
+                    <div class="quick"><a class="btn primary" href="add-resource.html">＋ Upload Resource</a>
+                        <!-- <a class="btn" href="announcements.html">＋ Announcement</a> -->
+                            <a class="btn"
+                            href="resources.html">Manage</a></div>
+                </div>
+            </div>
+            <script src="js/dashboard.js"></script>
+        </main>
+    </div>
+    <script src="js/supabase.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+
+</html>

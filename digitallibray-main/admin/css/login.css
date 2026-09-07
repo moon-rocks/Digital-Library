@@ -1,0 +1,63 @@
+.login-page {
+    position: relative;
+}
+
+.login-card {
+    position: relative;
+    padding-top: 76px;
+}
+
+.login-back {
+    position: absolute;
+    top: 20px;
+    left: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 1px solid #dce2eb;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .88);
+    color: #25324a;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 8px 22px rgba(20, 30, 55, .08);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    z-index: 2;
+}
+
+.login-back span {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.login-back:hover,
+.login-back:focus-visible {
+    border-color: #2864dc;
+    box-shadow: 0 12px 26px rgba(40, 100, 220, .16);
+    transform: translateX(-3px);
+}
+
+.login-back:focus-visible {
+    outline: 3px solid rgba(40, 100, 220, .22);
+    outline-offset: 3px;
+}
+
+.login-submit {
+    width: 100%;
+    margin-top: 20px;
+}
+
+@media (max-width: 640px) {
+    .login-back {
+        top: 16px;
+        left: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .login-back {
+        transition: none;
+    }
+}

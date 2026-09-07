@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login · Digital Library Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/login.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../config/supabase.js"></script>
+    <script src="../config/storage.js"></script>
+</head>
+
+<body>
+    <div class="login-page">
+        <div class="login-card">
+            <a class="login-back" href="../index.html">
+                <span aria-hidden="true">←</span>
+                Back to library
+            </a>
+            <h1>Digital Library</h1>
+            <div class="muted">Admin Portal</div>
+            <div id="loginNotice" class="notice"></div>
+            <form id="loginForm">
+                <div class="field">
+                    <label>Email</label>
+                    <input class="input" type="email" name="email" required placeholder="admin@example.com">
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input class="input" type="password" name="password" required placeholder="********">
+                </div>
+                <button type="submit" class="btn primary login-submit">Login to Dashboard</button>
+            </form>
+        </div>
+    </div>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+
+</html>

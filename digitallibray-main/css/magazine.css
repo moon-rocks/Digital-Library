@@ -1,0 +1,93 @@
+#page1 {
+    min-height: 100vh;
+    font-family: futura;
+    position: relative;
+    width: 100%;
+    padding: 0vh 1vw;
+    padding-top: 18vh;
+}
+
+#page1 h1 {
+
+    font-family: "Futura Now Headline", "Lucida Sans", Tahoma, sans-serif;
+    font-size: 10vw;
+    line-height: 10vw;
+    letter-spacing: -1vw;
+    font-weight: 800px;
+
+}
+
+#changethecourse {
+    overflow: hidden;
+}
+
+/* #heroimagebox img{
+    height: 100vh;
+    width: 100%;
+    position: center;
+    object-fit: cover;
+
+} */
+/* #heroimagebox img {
+    width: 100%;
+    height: clamp(450px, 85vh, 100vh);
+    object-fit: cover;
+    display: block;
+    position: center;
+} */
+@media (max-width: 768px) {
+    #heroimagebox img {
+        width: 100%;
+        height: clamp(450px, 85vh, 100vh);
+        object-fit: cover;
+        display: block;
+        position: center;   /* or relative with left:0 */
+        left: 0;
+        transform: none;
+    }
+}
+#heroimagebox img {
+    width: 80%;
+    height: clamp(450px, 85vh, 100vh);
+    object-fit: cover;
+    display: block;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0);
+    
+}
+
+#belowhero {
+    height: 60vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    gap: 2vw;
+
+}
+
+#belowhero blockquote {
+    width: 65%;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 5vw;
+    font-weight: 900;
+    line-height: 0.9;
+    font-family: "Futura Now Headline", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#belowhero p {
+    font-size: 1.5vw;
+}
+
+hr {
+    width: 90%;
+    border: none;
+    border-top: 1px solid black;
+    margin: 20px auto;
+}

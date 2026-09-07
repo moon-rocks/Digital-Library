@@ -1,0 +1,185 @@
+/* side menu */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100vh;
+
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+
+    z-index: 1000;
+}
+
+.side-menu-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(15, 23, 42, 0.18);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.side-menu-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.side-menu-inner {
+    padding: 20px;
+}
+
+.side-close {
+    border: none;
+    background: none;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.side-nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.side-nav a {
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+    color: #0a0a0a;
+    border-radius: 12px;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.side-nav a:hover,
+.side-nav a:focus-visible,
+.side-nav a.active {
+    background: rgba(37, 99, 235, 0.1);
+    color: #1d4ed8;
+    outline: none;
+}
+
+.side-nav a:hover,
+.side-nav a:focus-visible {
+    transform: translateX(4px);
+}
+
+.side-nav .admin-nav-item {
+    margin-top: 12px;
+    border-top: 1px solid rgba(15, 23, 42, 0.1);
+    padding-top: 12px;
+}
+
+.side-nav .admin-nav-item a {
+    color: #b45309;
+}
+
+/* end side mune */
+/* Add these lines */
+
+.side-menu {
+    left: -300px;
+    /* Hide menu outside the screen */
+    transition: left 0.3s ease;
+}
+
+.side-menu.active {
+    left: 0;
+    /* Show menu */
+}
+
+body.menu-open {
+    overflow: hidden;
+}
+
+#loader {
+    perspective: 1200px;
+    transform-origin: left center;
+    backface-visibility: hidden;
+}
+
+@media (max-width: 600px) {
+    .admin-login-btn {
+        padding: 9px 11px;
+        font-size: 12px;
+    }
+
+    .admin-login-btn span {
+        display: none;
+    }
+}
+
+/* Responsive menu scrolling */
+.side-menu {
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+}
+
+.side-menu-inner {
+    min-height: 100%;
+    box-sizing: border-box;
+}
+
+.side-nav {
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+
+.side-nav ul {
+    margin: 0;
+    padding: 0 0 8px;
+}
+
+.side-nav a {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+/* Keep the close button visible while scrolling long menus */
+.side-close {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+@media (max-width: 600px) {
+    .side-menu {
+        width: min(88vw, 320px);
+        left: calc(-1 * min(88vw, 320px));
+    }
+
+    .side-menu.active {
+        left: 0;
+    }
+
+    .side-menu-inner {
+        padding: 16px;
+    }
+
+    .side-nav a {
+        padding: 13px 10px;
+        line-height: 1.35;
+    }
+}
+
+@media (min-width: 601px) and (max-height: 700px) {
+    .side-nav a {
+        padding: 9px 12px;
+    }
+}

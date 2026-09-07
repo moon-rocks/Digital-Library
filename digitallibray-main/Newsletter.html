@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewsLetter</title>
+    <link rel="icon" type="image/png" href="./favicon/ChatGPT Image Aug 7, 2026, 04_59_42 PM.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/magazine.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div id="cursor"></div>
+    <div id="main">
+        <header id="header">
+            <div id="name">
+                <button id="menu" aria-label="Open menu"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
+                <a href="index.html">
+                    <h1 id="logo">Digital Library</h1>
+                </a>
+            </div>
+
+        </header>
+        <div class="side-menu" id="sideMenu">
+            <div class="side-menu-inner">
+
+                <button class="side-close" id="closeMenu">&times;</button>
+
+                <nav class="side-nav">
+                    <ul>
+                        <li><a href="index.html">HOME</a></li>
+                        <li><a href="Magazine.html">MAGAZINE</a></li>
+                        <li><a href="curriculum.html">CURRICULUM</a></li>
+                        <li><a href="LabManual.html">LAB MANUAL</a></li>
+                        <li><a href="cheetSheet.html">QUICK REFERENCE GUIDE</a></li>
+                        <li><a href="PYQ.html">PREVIOUS YEAR QUESTION PAPER</a></li>
+                        <li><a href="publication.html">PUBLICATIONS</a></li>
+                        <li> <a href="BOOKS.HTML">BOOKS</a></li>
+                        <li><a href="BeyoundCurriculum.html">BEYOND CURRICULUM</a></li>
+                        <li> <a href="BOOKS.HTML">BOOKS</a></li>
+                        <li><a href="Newsletter.html">NEWSLETTER</a></li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+
+
+        <!-- Hero Section -->
+        <section class="relative w-full min-h-screen px-4 md:px-6 lg:px-8 pt-28 md:pt-32">
+
+            <!-- Heading -->
+            <div class="overflow-hidden text-center">
+                <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-gray-900">
+                    Departmental Newsletter
+                </h1>
+
+                <h2 class="mt-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-blue-600">
+                    Connect • Inform • Inspire
+                </h2>
+            </div>
+
+
+            <!-- Newsletter Cards -->
+            <div class="mt-8 md:mt-12">
+
+                <!-- JS will create cards here -->
+                <div id="newsletterGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Below Hero -->
+        <section class="w-full py-20 px-4">
+
+            <blockquote class="max-w-5xl mx-auto text-center
+               text-4xl sm:text-5xl md:text-6xl lg:text-7xl
+               font-black leading-none">
+                "Keeping our college community informed, connected and inspired."
+            </blockquote>
+
+            <p class="mt-8 text-center text-gray-600
+               text-base sm:text-lg md:text-xl">
+                Stay updated with official college news, academic activities, campus events, student achievements,
+                institutional initiatives and important announcements.
+            </p>
+
+            <hr class="mt-12 border-gray-300 w-11/12 mx-auto">
+
+        </section>
+
+
+
+        <footer class="bg-slate-950 text-slate-200 py-16">
+            <section class="max-w-7xl mx-auto px-5">
+                <div class="grid gap-10 lg:grid-cols-4">
+
+                    <!-- About -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-4">
+                            GP Muzaffarpur Digital Library
+                        </h3>
+
+                        <p class="text-slate-400 leading-relaxed">
+                            A digital learning platform providing engineering books,
+                            lecture notes, previous year question papers, lab manuals,
+                            and academic resources for the students of Government
+                            Polytechnic Muzaffarpur.
+                        </p>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div>
+                        <h4 class="text-xl font-semibold text-white mb-4">
+                            Quick Links
+                        </h4>
+
+                        <ul class="space-y-3 text-slate-400">
+                            <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+                            <li><a href="#coursesContainer" class="hover:text-white transition">Library Resources</a>
+                            </li>
+                            <li><a href="#teachersection" class="hover:text-white transition">Library Team</a></li>
+                            <li><a href="#faq" class="hover:text-white transition">FAQs</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact -->
+                    <div>
+                        <h4 class="text-xl font-semibold text-white mb-4">
+                            Contact Information
+                        </h4>
+
+
+
+                        <p class="text-slate-400">
+                            Email:
+                            <a href="mailto:principal.gpmuz@gmail.com" class="hover:text-white transition">
+                                principal.gpmuz@gmail.com
+                            </a>
+                        </p>
+
+                        <p class="text-slate-400">
+                            Address:<br>
+                            Government Polytechnic Muzaffarpur,<br>
+                            Muzaffarpur, Bihar - 842001
+                        </p>
+
+                        <br>
+
+
+
+                    </div>
+
+                    <!-- Social -->
+                    <div>
+                        <h4 class="text-xl font-semibold text-white mb-4">
+                            Follow Us
+                        </h4>
+
+                        <ul class="social-ul">
+
+                            <li class="social-li">
+                                <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                            </li>
+
+                            <li class="social-li">
+                                <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+                                    <i class="fa-brands fa-twitter"></i>
+                                </a>
+                            </li>
+
+                            <li class="social-li">
+                                <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                </a>
+                            </li>
+
+                            <li class="social-li">
+                                <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="mt-12 border-t border-slate-800 pt-6 text-center text-slate-500 text-sm">
+                    © 2026 Government Polytechnic Muzaffarpur Digital Library. All Rights Reserved.
+                </div>
+
+            </section>
+        </footer>
+    </div>
+
+
+
+
+
+    <!-- // Gsap is needed for Basic Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"
+        integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- // Scroll Trigger is needed for Scroll Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"
+        integrity="sha512-P2IDYZfqSwjcSjX0BKeNhwRUH8zRPGlgcWl5n6gBLzdi4Y5/0O4zaXrtO4K9TZK6Hn1BenYpKowuCavNandERg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config/supabase.js"></script>
+    <script src="js/public-supabase.js"></script>
+    <script src="js/resource-fetch.js"></script>
+    <script src="js/newsletter.js"></script>
+
+    <script src="js/mouse.js"></script>
+
+    <script src="js/nav.js"> </script>
+    <script src="js/script.js"></script>
+
+
+
+</body>
+
+</html>
