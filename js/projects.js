@@ -26,8 +26,63 @@
       return "";
     }
   };
+  const friendlyUploadError = (error) => {
+    const message = error?.message || String(error || "");
+    const lower = message.toLowerCase();
+    if (lower.includes("bucket") && lower.includes("not found"))
+      return "Storage bucket is missing. Please run the project Supabase SQL migration first.";
+    if (lower.includes("row-level security") || lower.includes("rls"))
+      return "Upload was blocked by Supabase storage rules. Please update the project storage policies.";
+    if (
+      lower.includes("permission denied") ||
+      lower.includes("forbidden") ||
+      lower.includes("policy")
+    )
+      return "This upload is not allowed by the current Supabase permissions.";
+    if (lower.includes("duplicate") || lower.includes("already exists"))
+      return "A file with this name already exists. Rename the file and try again.";
+    if (lower.includes("too large") || lower.includes("exceeds"))
+      return "File is too large. Keep each upload under 25 MB.";
+    return message || "File upload failed. Please try again.";
+  };
+  function validateUploadFile(file, type) {
+    if (!file || !file.size) return null;
+    if (!(file instanceof File)) return null;
+    const maxBytes = 25 * 1024 * 1024;
+    if (file.size > maxBytes)
+      throw new Error("Each uploaded file must be under 25 MB.");
+    if (type === "image") {
+      const allowed = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+      if (!allowed.includes(file.type))
+        throw new Error(
+          "Only JPG, PNG, and WebP images are allowed for thumbnails.",
+        );
+    }
+    if (type === "project") {
+      const allowed = [
+        "application/pdf",
+        "application/zip",
+        "application/x-zip-compressed",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.ms-powerpoint",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
+      const extension = file.name.split(".").pop()?.toLowerCase();
+      const safeExtensions = ["pdf", "zip", "ppt", "pptx", "doc", "docx"];
+      if (!allowed.includes(file.type) && !safeExtensions.includes(extension)) {
+        throw new Error(
+          "Only PDF, ZIP, PPT, PPTX, DOC, and DOCX files are supported.",
+        );
+      }
+    }
+    return file;
+  }
   function card(p) {
-    const contributors = [p.student_name, ...(String(p.team_members || "").split(/[,\n]/))]
+    const contributors = [
+      p.student_name,
+      ...String(p.team_members || "").split(/[,\n]/),
+    ]
       .map((name) => name.trim())
       .filter(Boolean);
     contributorProjects.set(p.id, {
@@ -85,7 +140,9 @@
     });
   });
   const contributorsDialog = document.getElementById("contributorsDialog");
-  const contributorsDialogTitle = document.getElementById("contributorsDialogTitle");
+  const contributorsDialogTitle = document.getElementById(
+    "contributorsDialogTitle",
+  );
   const contributorsList = document.getElementById("contributorsList");
   const closeContributors = document.getElementById("closeContributors");
   document.addEventListener("click", (event) => {
@@ -100,7 +157,9 @@
     contributorsDialog.showModal();
     closeContributors.focus();
   });
-  closeContributors?.addEventListener("click", () => contributorsDialog?.close());
+  closeContributors?.addEventListener("click", () =>
+    contributorsDialog?.close(),
+  );
   contributorsDialog?.addEventListener("click", (event) => {
     if (event.target === contributorsDialog) contributorsDialog.close();
   });
@@ -113,7 +172,10 @@
     openContribution.addEventListener("click", () => {
       contributionSection.hidden = false;
       openContribution.setAttribute("aria-expanded", "true");
-      contributionSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      contributionSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
       submitHeading?.focus({ preventScroll: true });
     });
     closeContribution.addEventListener("click", () => {
@@ -133,19 +195,27 @@
         if (!client) throw new Error("Supabase is not configured.");
         const fd = new FormData(form),
           slug = Date.now() + "-" + Math.random().toString(36).slice(2, 8);
-        const upload = async (file, bucket) => {
-          if (!file || !file.size) return null;
-          if (file.size > 25 * 1024 * 1024)
-            throw new Error("Each uploaded file must be under 25 MB.");
-          const path = `submissions/${slug}/${file.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
-          const r = await client.storage
-            .from(bucket)
-            .upload(path, file, { upsert: false });
-          if (r.error) throw r.error;
+        const upload = async (file, bucket, kind = "project") => {
+          const validFile = validateUploadFile(file, kind);
+          if (!validFile) return null;
+          const path = `submissions/${slug}/${validFile.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
+          const r = await client.storage.from(bucket).upload(path, validFile, {
+            upsert: false,
+            contentType: validFile.type || "application/octet-stream",
+          });
+          if (r.error) throw new Error(friendlyUploadError(r.error));
           return path;
         };
-        const imagePath = await upload(fd.get("thumbnail"), "project-images");
-        const filePath = await upload(fd.get("project_file"), "project-files");
+        const imagePath = await upload(
+          fd.get("thumbnail"),
+          "project-images",
+          "image",
+        );
+        const filePath = await upload(
+          fd.get("project_file"),
+          "project-files",
+          "project",
+        );
         const payload = {
           title: fd.get("title"),
           student_name: fd.get("student_name"),
@@ -172,7 +242,9 @@
         notice.className =
           "md:col-span-2 rounded-xl p-4 bg-red-50 text-red-700";
         notice.textContent =
-          err.message || "Submission failed. Please try again.";
+          err?.message ||
+          friendlyUploadError(err) ||
+          "Submission failed. Please try again.";
       } finally {
         btn.disabled = false;
         btn.innerHTML =
