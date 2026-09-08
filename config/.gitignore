@@ -1,5 +1,5 @@
 # Keep the example file for setup documentation only.
 # The runtime config file must remain in the repo for GitHub-hosted deployments.
 # Do not ignore config/supabase.js.
-supabase.example.js
-supabase.js
+../config/supabase.example.js
+../config/storage.js
