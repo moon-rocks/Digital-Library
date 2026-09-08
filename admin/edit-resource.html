@@ -1,1 +1,90 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Edit Resource · Digital Library Admin</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/admin.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../config/supabase.js"></script><script src="../config/storage.js"></script></head><body><div class="app"><aside class="sidebar"><div class="brand">Digital Library<small>ADMIN PORTAL</small></div><nav class="nav"><a class="" href="index.html">▦ Dashboard</a><a class="active" href="resources.html">▤ Resources</a><a class="" href="add-resource.html">＋ Add Resource</a><a class="" href="website.html">⌂ Website</a><a class="" href="announcements.html">◉ Announcements</a><a class="" href="media.html">▧ Media</a><a class="" href="settings.html">⚙ Settings</a></nav><div class="sidebar-bottom"><button class="btn" data-logout style="width:100%">Logout</button></div></aside><main class="main"><div class="topbar"><div><button class="btn mobile-menu" id="menuBtn">☰</button><h1>Edit Resource</h1></div><div style="display:flex;gap:8px;align-items:center"><span class="demo-pill">DEMO MODE</span><button class="btn" id="themeBtn">◐ Theme</button></div></div><form id="resourceForm" class="card form-grid"><div class="field"><label>Resource Type *</label><select class="select" name="resource_type" required><option value="">Select</option><option>Book</option><option>Notes</option><option>PYQ</option><option>Lab Manual</option><option>Syllabus</option><option>Cheatsheet</option><option>Publication</option><option>Newsletter</option><option>Magazine</option></select></div><div class="field"><label>Title *</label><input class="input" name="title" required></div><div class="field full"><label>Description</label><textarea class="textarea" name="description"></textarea></div><div class="field"><label>Branch</label><input class="input" name="branch" placeholder="CSE"></div><div class="field"><label>Semester</label><select class="select" name="semester"><option value="">Select</option><option value="1">Semester 1</option><option value="2">Semester 2</option><option value="3">Semester 3</option><option value="4">Semester 4</option><option value="5">Semester 5</option><option value="6">Semester 6</option><option value="7">Semester 7</option><option value="8">Semester 8</option></select></div><div class="field"><label>Subject</label><input class="input" name="subject"></div><div class="field"><label>Academic Year</label><input class="input" type="number" name="academic_year" value="2026"></div><div class="field full"><label>Tags</label><input class="input" name="tags" placeholder="DSA, notes, semester 4"></div><div class="field"><label>Cover Image</label><div class="dropzone"><input type="file" name="image" accept="image/png,image/jpeg,image/webp"></div></div><div class="field"><label>PDF / Document *</label><div class="dropzone"><input type="file" name="file" accept="application/pdf"></div></div><div class="field"><label>Status</label><select class="select" name="status"><option value="draft">Draft</option><option value="published">Published</option></select></div><div class="field" style="display:flex;align-items:end"><button class="btn primary" id="saveBtn" type="submit">Save Resource</button></div></form><script>window.EDIT_MODE=true</script><script src="js/upload.js"></script></main></div><script src="js/supabase.js"></script><script src="js/common.js"></script><script src="js/auth.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Edit Resource · Digital Library Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../config/supabase.js"></script>
+    <script src="../config/storage.js"></script>
+</head>
+
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">Digital Library<small>ADMIN PORTAL</small></div>
+            <nav class="nav"><a class="" href="index.html">▦ Dashboard</a><a class="active" href="resources.html">▤
+                    Resources</a><a class="" href="add-resource.html">＋ Add Resource</a><a class=""
+                    href="website.html">⌂ Website</a><a class="" href="announcements.html">◉ Announcements</a><a
+                    class="" href="media.html">▧ Media</a><a class="" href="settings.html">⚙ Settings</a></nav>
+            <div class="sidebar-bottom"><button class="btn" data-logout style="width:100%">Logout</button></div>
+        </aside>
+        <main class="main">
+            <div class="topbar">
+                <div><button class="btn mobile-menu" id="menuBtn">☰</button>
+                    <h1>Edit Resource</h1>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center"><span class="demo-pill">DEMO MODE</span><button
+                        class="btn" id="themeBtn">◐ Theme</button></div>
+            </div>
+            <form id="resourceForm" class="card form-grid">
+                <div class="field"><label>Resource Type *</label><select class="select" name="resource_type" required>
+                        <option value="">Select</option>
+                        <option>Book</option>
+                        <option>Notes</option>
+                        <option>PYQ</option>
+                        <option>Lab Manual</option>
+                        <option>Syllabus</option>
+                        <option>Cheatsheet</option>
+                        <option>Publication</option>
+                        <option>Newsletter</option>
+                        <option>Magazine</option>
+                    </select></div>
+                <div class="field"><label>Title *</label><input class="input" name="title" required></div>
+                <div class="field full"><label>Description</label><textarea class="textarea"
+                        name="description"></textarea></div>
+                <div class="field"><label>Branch</label><input class="input" name="branch" placeholder="CSE"></div>
+                <div class="field"><label>Semester</label><select class="select" name="semester">
+                        <option value="">Select</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                        <option value="7">Semester 7</option>
+                        <option value="8">Semester 8</option>
+                    </select></div>
+                <div class="field"><label>Subject</label><input class="input" name="subject"></div>
+                <div class="field"><label>Academic Year</label><input class="input" type="number" name="academic_year"
+                        value="2026"></div>
+                <div class="field full"><label>Tags</label><input class="input" name="tags"
+                        placeholder="DSA, notes, semester 4"></div>
+                <div class="field"><label>Cover Image</label>
+                    <div class="dropzone"><input type="file" name="image" accept="image/png,image/jpeg,image/webp">
+                    </div>
+                </div>
+                <div class="field"><label>PDF / Document *</label>
+                    <div class="dropzone"><input type="file" name="file" accept="application/pdf"></div>
+                </div>
+                <div class="field"><label>Status</label><select class="select" name="status">
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                    </select></div>
+                <div class="field" style="display:flex;align-items:end"><button class="btn primary" id="saveBtn"
+                        type="submit">Save Resource</button></div>
+            </form>
+            <script>window.EDIT_MODE = true</script>
+            <script src="js/upload.js"></script>
+        </main>
+    </div>
+    <script src="js/supabase.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+
+</html>

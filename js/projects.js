@@ -1,10 +1,8 @@
 (() => {
   const client = window.digitalLibraryPublic?.client || null;
   let currentFilter = "all";
-  const demoProjectTitles = new Set([
-    "Campus Book Marketplace",
-    "Digital Attendance System",
-  ]);
+  let projects = [];
+  let projectLoadError = "";
   const contributorProjects = new Map();
   const esc = (v) =>
     String(v ?? "").replace(
@@ -79,10 +77,8 @@
     return file;
   }
   function card(p) {
-    const contributors = [
-      p.student_name,
-      ...String(p.team_members || "").split(/[,\n]/),
-    ]
+    const contributors = String(p.team_members || "")
+      .split(/[,\n]/)
       .map((name) => name.trim())
       .filter(Boolean);
     contributorProjects.set(p.id, {
@@ -95,39 +91,124 @@
       : p.tech_stack || "Student Project";
     const githubUrl = safeUrl(p.github_url);
     const demoUrl = safeUrl(p.live_url);
+    const thumbnailUrl =
+      p.thumbnail_url ||
+      (p.thumbnail_path && client
+        ? client.storage.from("project-images").getPublicUrl(p.thumbnail_path)
+            .data.publicUrl
+        : "");
     return `<article class="project-card">
-      <div class="project-thumb">${p.thumbnail_url ? `<img src="${esc(p.thumbnail_url)}" alt="">` : `<i class="fa-solid fa-code text-5xl text-blue-600"></i>`}</div>
-      <div class="p-6 project-card-body"><div class="flex justify-between gap-3 items-center"><span class="text-xs font-extrabold px-3 py-1 rounded-full ${status === "ONGOING" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700"}">${status}</span><span class="text-xs text-slate-500">${esc(p.department || "CSE")}</span></div>
+      <div class="project-thumb">${thumbnailUrl ? `<img src="${esc(thumbnailUrl)}" alt="">` : `<i class="fa-solid fa-code text-5xl text-blue-600"></i>`}</div>
+      <div class="p-6 project-card-body"><div class="flex justify-between gap-3 items-center"><span class="text-xs font-extrabold px-3 py-1 rounded-full ${status === "ONGOING" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700"}">${status}</span><span class="text-xs text-slate-500">${esc(p.department || "Unspecified")}</span></div>
       <h3 class="text-xl font-bold mt-4">${esc(p.title)}</h3><p class="text-slate-600 text-sm mt-2 line-clamp-3">${esc(p.description)}</p>
-      <p class="text-xs font-semibold text-slate-500 mt-4">${esc(tech)}</p>
-      <div class="flex items-center justify-between gap-3 flex-wrap mt-5 text-xs text-slate-500"><span><i class="fa-solid fa-users mr-1"></i>${esc(contributors.length || p.contributors_count || 1)} contributors</span><button type="button" class="font-bold text-blue-600 hover:underline" data-view-contributors="${esc(p.id)}">View Contributors</button>${githubUrl ? `<a class="font-bold text-blue-600 hover:underline" target="_blank" rel="noopener" href="${esc(githubUrl)}">GitHub ↗</a>` : ""}${demoUrl ? `<a class="font-bold text-blue-600 hover:underline" target="_blank" rel="noopener" href="${esc(demoUrl)}">Demo URL ↗</a>` : ""}</div></div>
+      <p class="text-xs font-semibold text-slate-500 mt-4">${esc(tech)}${p.semester ? ` · Semester ${esc(p.semester)}` : ""}${p.category ? ` · ${esc(p.category)}` : ""}</p>
+      <p class="text-xs text-slate-500 mt-2">Guide: ${esc(p.student_name || "Not specified")}</p>
+      <div class="flex items-center justify-between gap-3 flex-wrap mt-5 text-xs text-slate-500"><span><i class="fa-solid fa-users mr-1"></i>${esc(contributors.length || p.contributors_count || 1)} contributors</span><button type="button" class="font-bold text-blue-600 hover:underline" data-view-contributors="${esc(p.id)}">View Contributors</button>${githubUrl ? `<a class="font-bold text-blue-600 hover:underline" target="_blank" rel="noopener" href="${esc(githubUrl)}">GitHub ↗</a>` : ""}${demoUrl ? `<a class="font-bold text-blue-600 hover:underline" target="_blank" rel="noopener" href="${esc(demoUrl)}">Demo URL ↗</a>` : ""}${p.projectFileUrl ? `<a class="font-bold text-blue-600 hover:underline" target="_blank" rel="noopener" href="${esc(p.projectFileUrl)}"><i class="fa-solid fa-download mr-1"></i>Project File</a>` : ""}</div></div>
     </article>`;
   }
   async function loadProjects() {
     const grids = document.querySelectorAll("#projectGrid");
     if (!grids.length) return;
-    let data = [];
-    if (client) {
-      const { data: rows, error } = await client
+    projectLoadError = client ? "" : "Supabase is not configured.";
+    if (!client) return renderProjects();
+    const [projectResult, submissionResult] = await Promise.all([
+      client
         .from("projects")
         .select("*")
         .eq("verification_status", "approved")
-        .order("created_at", { ascending: false });
-      if (!error) {
-        data = (rows || []).filter(
-          (project) => !demoProjectTitles.has(project.title),
-        );
-      }
+        .order("created_at", { ascending: false }),
+      client
+        .from("project_submissions")
+        .select("*")
+        .eq("verification_status", "approved")
+        .order("submitted_at", { ascending: false }),
+    ]);
+    if (projectResult.error) {
+      projectLoadError = projectResult.error.message;
+      projects = [];
+      return renderProjects();
     }
-    const filtered =
-      currentFilter === "all"
-        ? data
-        : data.filter((p) => p.project_status === currentFilter);
+    const published = (projectResult.data || []).filter(
+      (project) => project.verification_status === "approved",
+    );
+    const approvedRows = submissionResult.data || [];
+    const submissionsByProjectId = new Map(
+      approvedRows
+        .filter((submission) => submission.project_id)
+        .map((submission) => [submission.project_id, submission]),
+    );
+    const projectIdentity = (project) =>
+      `${project.title}\n${project.description}\n${project.project_file_path || ""}`;
+    const known = new Set(published.map(projectIdentity));
+    const publishedWithUploadTime = published.map((project) => ({
+      ...project,
+      uploadTime:
+        submissionsByProjectId.get(project.id)?.submitted_at ||
+        project.created_at,
+    }));
+    const approvedSubmissions = approvedRows
+      .filter(
+        (submission) =>
+          !submission.project_id && !known.has(projectIdentity(submission)),
+      )
+      .map((submission) => ({
+        ...submission,
+        verification_status: "approved",
+        created_at: submission.submitted_at,
+        uploadTime: submission.submitted_at,
+      }));
+    projects = [...publishedWithUploadTime, ...approvedSubmissions]
+      .map((project, index) => ({ project, index }))
+      .sort((first, second) => {
+        const timeDifference =
+          new Date(
+            second.project.uploadTime || second.project.created_at || 0,
+          ).getTime() -
+          new Date(
+            first.project.uploadTime || first.project.created_at || 0,
+          ).getTime();
+        return timeDifference || first.index - second.index;
+      })
+      .map(({ project }) => project);
+    projects = await Promise.all(
+      projects.map(async (project) => {
+        if (!project.project_file_path) return project;
+        const result = await client.storage
+          .from("project-files")
+          .createSignedUrl(project.project_file_path, 3600);
+        return { ...project, projectFileUrl: result.data?.signedUrl || null };
+      }),
+    );
+    renderProjects();
+  }
+
+  function renderProjects() {
+    const grids = document.querySelectorAll("#projectGrid");
+    const search =
+      document.querySelector("#projectSearch")?.value.trim().toLowerCase() ||
+      "";
+    const filtered = projects.filter((project) => {
+      const searchable = [
+        project.title,
+        project.description,
+        project.tech_stack,
+        project.student_name,
+        project.team_members,
+      ]
+        .join(" ")
+        .toLowerCase();
+      return (
+        (!search || searchable.includes(search)) &&
+        (currentFilter === "all" || project.project_status === currentFilter)
+      );
+    });
     grids.forEach(
       (g) =>
-        (g.innerHTML = filtered.length
-          ? filtered.map(card).join("")
-          : `<div class="project-empty col-span-full">No ${currentFilter} projects yet.</div>`),
+        (g.innerHTML = projectLoadError
+          ? `<div class="project-empty col-span-full">Could not load projects: ${esc(projectLoadError)}</div>`
+          : filtered.length
+            ? filtered.map(card).join("")
+            : `<div class="project-empty col-span-full">No matching approved projects yet.</div>`),
     );
   }
   document.querySelectorAll("[data-project-filter]").forEach((btn) => {
@@ -136,8 +217,14 @@
       document
         .querySelectorAll("[data-project-filter]")
         .forEach((b) => b.classList.toggle("active", b === btn));
-      loadProjects();
+      renderProjects();
     });
+  });
+  ["#projectSearch"].forEach((selector) => {
+    document.querySelector(selector)?.addEventListener("input", renderProjects);
+    document
+      .querySelector(selector)
+      ?.addEventListener("change", renderProjects);
   });
   const contributorsDialog = document.getElementById("contributorsDialog");
   const contributorsDialogTitle = document.getElementById(

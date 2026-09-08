@@ -53,43 +53,70 @@
                 </div>
                 <div id="list" class="empty">Loading...</div>
             </div>
+            <div class="card section">
+                <div class="section-head">
+                    <h2>All Approved Projects</h2><button class="btn" id="refreshProjects">Refresh</button>
+                </div>
+                <p class="muted">Manage approved projects, details, banners, and downloadable files.</p>
+                <div id="projectsList" class="empty">Loading...</div>
+            </div>
         </main>
     </div>
-    <script>
-        const $ = s => document.querySelector(s); const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
-        async function init() {
-            const c = window.supabaseClient || supabase.createClient(window.DIGITAL_LIBRARY_CONFIG.url, window.DIGITAL_LIBRARY_CONFIG.anonKey);
-            const { data: session } = await c.auth.getSession(); if (!session.session) { location.href = "login.html"; return; }
-            const { data: admin } = await c.from("admin_users").select("user_id").eq("user_id", session.session.user.id).eq("role", "admin").eq("active", true).maybeSingle(); if (!admin) { location.href = "login.html"; return; }
-            let selectedStatus = "pending";
-            const titles = { pending: "Pending Submissions", approved: "Approved Submissions", rejected: "Rejected Submissions" };
-            const statusLabel = status => status.charAt(0).toUpperCase() + status.slice(1);
-            const links = x => `${x.github_url ? `<a class="btn" target="_blank" rel="noopener" href="${esc(x.github_url)}">GitHub</a>` : ""}${x.live_url ? `<a class="btn" target="_blank" rel="noopener" href="${esc(x.live_url)}">Live Demo</a>` : ""}`;
-            const submissionCard = x => `<div class="card" style="margin:12px 0;border:1px solid #e7ebf2"><div style="display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap"><div><h3 style="margin:0 0 8px">${esc(x.title)}</h3><div class="muted">Student: ${esc(x.student_name)} · Team members: ${esc(x.team_members || "—")}</div><div class="muted">${esc(x.department || "—")} · Semester ${esc(x.semester || "—")}</div><p>${esc(x.description)}</p><div class="muted">${esc(x.tech_stack || "")}</div>${x.rejection_reason ? `<p class="muted">Reason: ${esc(x.rejection_reason)}</p>` : ""}</div><span class="demo-pill">${statusLabel(x.verification_status).toUpperCase()}</span></div><div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">${links(x)}${x.verification_status === "pending" ? `<button class="btn primary" onclick="approve('${x.id}')">✓ Approve</button><button class="btn danger" onclick="rejectProject('${x.id}')">✕ Reject</button>` : ""}${x.verification_status === "rejected" ? `<button class="btn danger" onclick="deleteRejected('${x.id}')">Delete</button>` : ""}</div></div>`;
-            async function load() {
-                const { data, error } = await c.from("project_submissions").select("*").order("submitted_at", { ascending: false });
-                if (error) {
-                    ["pending", "approved", "rejected"].forEach(s => $("#" + s).textContent = "—");
-                    $("#list").textContent = error.message.includes("project_submissions")
-                        ? "Project approval is not configured. Run supabase.sql in your Supabase project, then refresh this page."
-                        : error.message;
-                    return;
-                }
-                const rows = data || [];
-                ["pending", "approved", "rejected"].forEach(s => $("#" + s).textContent = rows.filter(x => x.verification_status === s).length);
-                const visibleRows = rows.filter(x => x.verification_status === selectedStatus);
-                $("#listTitle").textContent = titles[selectedStatus];
-                $("#list").innerHTML = visibleRows.length ? visibleRows.map(submissionCard).join("") : `<div class="empty">No ${selectedStatus} submissions.</div>`;
-            }
-            window.approve = async id => { const r = await c.from("project_submissions").select("*").eq("id", id).eq("verification_status", "pending").single(); if (r.error) return alert(r.error.message); const x = r.data; let thumb = null; if (x.thumbnail_path) { thumb = c.storage.from("project-images").getPublicUrl(x.thumbnail_path).data.publicUrl } const ins = await c.from("projects").insert({ title: x.title, description: x.description, department: x.department, semester: x.semester, project_status: x.project_status, verification_status: "approved", tech_stack: x.tech_stack, github_url: x.github_url, live_url: x.live_url, thumbnail_url: thumb, thumbnail_path: x.thumbnail_path, project_file_path: x.project_file_path, student_name: x.student_name, team_members: x.team_members }).select().single(); if (ins.error) return alert(ins.error.message); const update = await c.from("project_submissions").update({ verification_status: "approved", reviewed_by: session.session.user.id, reviewed_at: new Date().toISOString() }).eq("id", id).eq("verification_status", "pending"); if (update.error) { await c.from("projects").delete().eq("id", ins.data.id); return alert(update.error.message) } load(); };
-            window.rejectProject = async id => { const reason = prompt("Reason for rejection (optional):") || null; const result = await c.from("project_submissions").update({ verification_status: "rejected", rejection_reason: reason, reviewed_by: session.session.user.id, reviewed_at: new Date().toISOString() }).eq("id", id).eq("verification_status", "pending"); if (result.error) return alert(result.error.message); load(); };
-            window.deleteRejected = async id => { if (!confirm("Delete this rejected submission permanently?")) return; const result = await c.from("project_submissions").delete().eq("id", id).eq("verification_status", "rejected"); if (result.error) return alert(result.error.message); load(); };
-            document.querySelectorAll("[data-status]").forEach(button => button.onclick = () => { selectedStatus = button.dataset.status; document.querySelectorAll("[data-status]").forEach(item => item.classList.toggle("primary", item === button)); load(); });
-            $("#refresh").onclick = load; load();
-        }
-        document.addEventListener("DOMContentLoaded", init);
-    </script>
+    <dialog id="projectEditor"
+        style="border:0;border-radius:15px;padding:0;width:min(760px,calc(100% - 32px));max-height:90vh">
+        <form id="projectEditorForm" class="card" style="margin:0;max-height:90vh;overflow:auto">
+            <input type="hidden" name="id">
+            <div class="section-head">
+                <h2>Edit Project</h2><button class="btn" id="closeProjectEditor" type="button">Close</button>
+            </div>
+            <div class="form-grid">
+                <div class="field"><label>Title</label><input class="input" name="title" required></div>
+                <div class="field"><label>Faculty Guide</label><input class="input" name="student_name"></div>
+                <div class="field"><label>Department</label><input class="input" name="department"></div>
+                <div class="field"><label>Semester</label><select class="select" name="semester">
+                        <option value="">None</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+
+                    </select></div>
+                <div class="field"><label>Category</label><input class="input" name="category"></div>
+                <div class="field"><label>Status</label><select class="select" name="project_status">
+                        <option value="ongoing">Ongoing</option>
+                        <option value="completed">Completed</option>
+                    </select></div>
+                <div class="field"><label>Tech Stack</label><input class="input" name="tech_stack"></div>
+                <div class="field"><label>Team Members</label><input class="input" name="team_members"></div>
+                <div class="field"><label>GitHub URL</label><input class="input" name="github_url" type="url"></div>
+                <div class="field"><label>Live URL</label><input class="input" name="live_url" type="url"></div>
+                <div class="field"><label>Replace Banner</label><input class="input" name="thumbnail" type="file"
+                        accept="image/jpeg,image/png,image/webp"></div>
+                <div class="field"><label>Replace Project File</label><input class="input" name="project_file"
+                        type="file" accept=".pdf,.zip,.ppt,.pptx,.doc,.docx"></div>
+                <div class="field" style="grid-column:1/-1"><label>Description</label><textarea class="textarea"
+                        name="description" rows="5" required></textarea></div>
+            </div>
+            <button class="btn primary" type="submit" style="margin-top:16px">Save Project</button>
+        </form>
+    </dialog>
+    <dialog id="rejectDialog" style="border:0;border-radius:15px;padding:0;width:min(460px,calc(100% - 32px))">
+        <form id="rejectForm" class="card" style="margin:0">
+            <input type="hidden" name="id">
+            <h2 style="margin-top:0">Reject Submission</h2>
+            <p class="muted">Add an optional reason for the student.</p>
+            <textarea class="textarea" name="reason" rows="4" placeholder="Reason (optional)"></textarea>
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+                <button class="btn" id="closeRejectDialog" type="button">Cancel</button>
+                <button class="btn danger" type="submit">Reject Submission</button>
+            </div>
+        </form>
+    </dialog>
+    <script src="js/projects.js?v=7"></script>
     <script src="js/auth.js"></script>
+    <script src="js/sidebar.js"></script>
 </body>
 
 </html>

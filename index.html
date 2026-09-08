@@ -160,10 +160,12 @@
                 </ul>
                 <div class="hero-actions mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
                     <a href="projects.html" id="openEnrollBtn" type="button"
-                        class="hero-action rounded-lg bg-black text-white px-8 py-4 font-semibold transition hover:bg-gray-800"> Explore
+                        class="hero-action rounded-lg bg-black text-white px-8 py-4 font-semibold transition hover:bg-gray-800">
+                        Explore
                         Projects</a>
                     <a href="PYQ.html"
-                        class="hero-action rounded-lg border-2 border-black px-8 py-4 font-semibold transition hover:bg-black hover:text-white"> Browse
+                        class="hero-action rounded-lg border-2 border-black px-8 py-4 font-semibold transition hover:bg-black hover:text-white">
+                        Browse
                         Resources</a>
                 </div>
 
@@ -1589,11 +1591,11 @@
                 </div>
 
                 <div class="flex justify-center px-4">
-                    <button
+                    <a href="BOOKS.HTML"
                         class="inline-flex items-center gap-2 bg-blue-600 text-white px-5 sm:px-8 py-3 sm:py-4 rounded-xl text-sm sm:text-lg font-semibold hover:bg-blue-700 transition-all duration-200 w-full sm:w-auto justify-center max-w-md">
                         <i class="fa-solid fa-book"></i>
                         Explore All Library Resources
-                    </button>
+                    </a>
                 </div>
 
             </section>
@@ -1734,32 +1736,11 @@
                         completing.</p>
                 </div>
 
-                <div class="flex flex-wrap justify-center gap-3 mb-10" role="tablist">
-                    <button class="project-filter active" data-project-filter="all">All Projects</button>
-                    <button class="project-filter" data-project-filter="ongoing">Ongoing</button>
-                    <button class="project-filter" data-project-filter="completed">Completed</button>
-                </div>
-
-                <div id="projectGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="project-empty col-span-full">Loading projects...</div>
-                </div>
-
-                <div
-                    class="project-contribution mt-14 rounded-[2rem] p-8 md:p-12 bg-slate-950 text-white overflow-hidden relative">
-                    <div class="relative z-10 max-w-3xl">
-                        <span class="text-blue-300 text-sm font-bold tracking-[.2em] uppercase">Open for
-                            Contribution</span>
-                        <h3 class="text-3xl md:text-5xl font-bold mt-3">Have a project to showcase?</h3>
-                        <p class="text-slate-300 mt-4 text-lg">Share your student project with the campus community.
-                            Every submission is reviewed by an admin before it goes live.</p>
-                        <a href="projects.html#submit"
-                            class="inline-flex items-center gap-2 mt-7 rounded-full bg-white text-slate-950 px-6 py-3 font-bold hover:scale-105 transition">
-                            <i class="fa-solid fa-plus"></i> Submit Your Project
-                        </a>
-                    </div>
-                    <div class="absolute -right-16 -bottom-24 w-64 h-64 rounded-full border border-white/10"></div>
-                    <div class="absolute right-10 top-10 text-white/10 text-8xl"><i class="fa-solid fa-code-branch"></i>
-                    </div>
+                <div class="flex justify-center">
+                    <a href="projects.html"
+                        class="inline-flex items-center gap-3 rounded-2xl bg-slate-950 text-white px-10 py-5 text-lg font-bold shadow-lg hover:bg-blue-700 hover:-translate-y-1 transition">
+                        <i class="fa-solid fa-compass"></i> Explore Projects
+                    </a>
                 </div>
             </div>
         </section>
@@ -1998,7 +1979,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config/supabase.js"></script>
-    <script src="js/projects.js?v=2"></script>
     <script src="js/loadinganimation.js"></script>
 
 

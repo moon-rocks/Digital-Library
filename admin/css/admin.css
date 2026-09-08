@@ -314,7 +314,29 @@ body {
 }
 
 .mobile-menu {
-    display: none
+    display: none;
+    border: 0;
+    border-radius: 9px;
+    background: #e8edf5;
+    color: #172033;
+    padding: 9px 12px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    margin-bottom: 14px
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 19;
+    border: 0;
+    background: rgba(5, 12, 26, .55)
+}
+
+.sidebar-overlay.visible {
+    display: block
 }
 
 .empty {
@@ -404,6 +426,10 @@ body {
 
     .mobile-menu {
         display: inline-flex
+    }
+
+    body.menu-open {
+        overflow: hidden
     }
 
     .form-grid {

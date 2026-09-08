@@ -363,6 +363,7 @@
 </head>
 
 <body>
+  <div id="cursor"></div>
   <header id="header">
     <div id="name"><a href="index.html">
         <h1 id="logo">Digital Library</h1>
@@ -383,10 +384,14 @@
     </section>
     <section class="py-16">
       <div class="max-w-7xl mx-auto px-5 projects-content">
-        <div class="flex flex-wrap justify-center gap-3 mb-10 project-filters"><button class="project-filter active"
+        <div class="flex flex-wrap justify-center gap-3 mb-5 project-filters"><button class="project-filter active"
             data-project-filter="all">All Projects</button><button class="project-filter"
             data-project-filter="ongoing">Ongoing</button><button class="project-filter"
             data-project-filter="completed">Completed</button></div>
+        <div class="grid grid-cols-1 gap-3 mb-10" aria-label="Project filters">
+          <input id="projectSearch" class="field" type="search" placeholder="Search projects..."
+            aria-label="Search projects">
+        </div>
         <div id="projectGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 project-grid">
           <div class="project-empty col-span-full">Loading projects...</div>
         </div>
@@ -452,8 +457,10 @@
       <ul id="contributorsList" class="contributors-list"></ul>
     </div>
   </dialog>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+  <script src="js/mouse.js"></script>
   <script src="js/public-supabase.js"></script>
-  <script src="js/projects.js?v=2"></script>
+  <script src="js/projects.js?v=9"></script>
 </body>
 
 </html>
