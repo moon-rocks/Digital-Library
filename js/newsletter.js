@@ -24,7 +24,7 @@ const newsletters = [
   {
     image: "./images//image (4).jpg",
     title: "Newsletter Jan–June 2026 (Vol I)",
-    pdf: "./newsletter/ByteBuzz-—-Jan–June-2026-1_compressed.pdf",
+    pdf: "./Newsletter/ByteBuzz-—-Jan–June-2026-1_compressed.pdf",
   },
 ];
 
