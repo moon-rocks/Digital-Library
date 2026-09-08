@@ -8,18 +8,18 @@ const newsletters = [
   {
     image: "./images/image vol2 july -dec.jpg",
     title: "Newsletter July–December 2024 (Vol II)",
-    pdf: "./newsletter/Newsletter-July-Dec-2024-1_compressed.pdf",
+    pdf: "./Newsletter/Newsletter-July-Dec-2024-1_compressed.pdf",
   },
   {
     image: "./images/image (2).jpg",
     title: "Newsletter Jan–June 2025 (Vol I)",
-    pdf: "./newsletter/BYTEBUZZ-jan-jun-2025-newsletter-3_compressed_compressed.pdf",
+    pdf: "./Newsletter/BYTEBUZZ-jan-jun-2025-newsletter-3_compressed_compressed.pdf",
   },
 
   {
     image: "./images/image (3).jpg",
     title: "Newsletter July–December 2025 (Vol II)",
-    pdf: "./newsletter/NewsLetter-July-dec-2025-1_compressed.pdf",
+    pdf: "./Newsletter/NewsLetter-July-dec-2025-1_compressed.pdf",
   },
   {
     image: "./images//image (4).jpg",
