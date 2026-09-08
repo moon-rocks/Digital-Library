@@ -2,7 +2,8 @@ const newsletters = [
   {
     image: "./images/image!2024.jpg",
     title: "Newsletter Jan–June 2024 (Vol I)",
-    pdf: "./newsletter/Newsletter-jan-june-2024-1.pdf",
+    pdf: "./Newsletter/Newsletter-jan-june-2024-1.pdf",
+
   },
   {
     image: "./images/image vol2 july -dec.jpg",
