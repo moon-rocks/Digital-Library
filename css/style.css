@@ -117,6 +117,17 @@ body {
     transform: translateY(-1px);
 }
 
+#header .header-credit i {
+    margin-left: 0.25rem;
+    font-size: 0.68em;
+    transition: transform 180ms ease;
+}
+
+#header .header-credit:hover i,
+#header .header-credit:focus-visible i {
+    transform: translate(1px, -1px);
+}
+
 
 .enrollment-form {
     display: initial;
