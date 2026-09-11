@@ -96,8 +96,7 @@ body {
     gap: 1.25rem;
 }
 
-#header::after {
-    content: "Powered by Chandresh Kumar";
+#header .header-credit {
     color: #343a40;
     padding: 0.22rem 0.65rem;
     border: 1px solid rgba(40, 39, 39, 0.18);
@@ -110,7 +109,8 @@ body {
     transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
 }
 
-#header:hover::after {
+#header .header-credit:hover,
+#header .header-credit:focus-visible {
     color: #18251a;
     border-color: rgba(115, 191, 111, 0.7);
     background: rgba(115, 191, 111, 0.2);
@@ -193,7 +193,7 @@ body {
         font-size: 1rem;
     }
 
-    #header::after {
+    #header .header-credit {
         padding: 0.16rem 0.45rem;
         font-size: 0.55rem;
     }
