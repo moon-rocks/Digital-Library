@@ -96,6 +96,27 @@ body {
     gap: 1.25rem;
 }
 
+#header::after {
+    content: "Powered by Chandresh Kumar";
+    color: #343a40;
+    padding: 0.22rem 0.65rem;
+    border: 1px solid rgba(40, 39, 39, 0.18);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.42);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+#header:hover::after {
+    color: #18251a;
+    border-color: rgba(115, 191, 111, 0.7);
+    background: rgba(115, 191, 111, 0.2);
+    transform: translateY(-1px);
+}
+
 
 .enrollment-form {
     display: initial;
@@ -170,6 +191,11 @@ body {
 
     #logo {
         font-size: 1rem;
+    }
+
+    #header::after {
+        padding: 0.16rem 0.45rem;
+        font-size: 0.55rem;
     }
 
     #menu,
@@ -1154,11 +1180,58 @@ ul .li:nth-child(2) a:before{
 
 /* //student tesatimonials */
 /* ================= PROJECTS MODULE ================= */
-.project-filter{padding:.65rem 1.1rem;border-radius:999px;background:#fff;border:1px solid #e2e8f0;font-weight:700;transition:.2s;cursor:pointer}
-.project-filter.active,.project-filter:hover{background:#0f172a;color:#fff;border-color:#0f172a}
-.project-card{background:#fff;border:1px solid #e2e8f0;border-radius:24px;overflow:hidden;transition:.35s;box-shadow:0 8px 30px rgba(15,23,42,.05)}
-.project-card:hover{transform:translateY(-6px);box-shadow:0 18px 45px rgba(15,23,42,.12)}
-.project-thumb{height:190px;background:linear-gradient(135deg,#dbeafe,#e2e8f0);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.project-thumb img{width:100%;height:100%;object-fit:cover}
-.project-empty{padding:40px;text-align:center;color:#64748b}
-.project-contribution{position:relative}
+.project-filter {
+    padding: .65rem 1.1rem;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    font-weight: 700;
+    transition: .2s;
+    cursor: pointer
+}
+
+.project-filter.active,
+.project-filter:hover {
+    background: #0f172a;
+    color: #fff;
+    border-color: #0f172a
+}
+
+.project-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    overflow: hidden;
+    transition: .35s;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, .05)
+}
+
+.project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, .12)
+}
+
+.project-thumb {
+    height: 190px;
+    background: linear-gradient(135deg, #dbeafe, #e2e8f0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden
+}
+
+.project-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+}
+
+.project-empty {
+    padding: 40px;
+    text-align: center;
+    color: #64748b
+}
+
+.project-contribution {
+    position: relative
+}
